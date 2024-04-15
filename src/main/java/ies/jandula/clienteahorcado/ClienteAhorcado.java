@@ -36,10 +36,12 @@ public class ClienteAhorcado
             
             System.out.println("Letras no usadas: "+flujoEntrada.readUTF());
             
+            System.out.println("Palabra escogida: "+flujoEntrada.readUTF());
+            
             System.out.println("Introduce una letra: ");
             
             flujoSalida.writeUTF(scanner.nextLine());
-
+            
             
         } 
         catch (Exception exception)

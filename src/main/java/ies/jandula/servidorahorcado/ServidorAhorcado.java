@@ -21,10 +21,19 @@ public class ServidorAhorcado
         DataInputStream flujoEntrada = null;
         DataOutputStream flujoSalida = null;
         
-        String [] palabras = {"Perro","Gato","Raton","Comadreja"};
+        Random random = new Random();
+        String [] palabras = {"perro","gato","raton","comadreja"};
+        
+        // Posicion aleatoria de la array
+        int indice = random.nextInt(palabras.length);
+        
+        // Seleccionar la palabra correspondiente al índice aleatorio
+        String palabraEscogida = palabras[indice];
         
         List<Character> letras = new ArrayList<>();
-
+        
+        int cont = 5;
+        
         try 
         {
             socketServidor = new ServerSocket(PUERTO);
@@ -34,11 +43,6 @@ public class ServidorAhorcado
             flujoEntrada = new DataInputStream(socketCliente.getInputStream());
             flujoSalida = new DataOutputStream(socketCliente.getOutputStream());
             
-            Random random = new Random();
-            
-            int vidas = 5;
-            
-            String palabraEscogida = palabras[random.nextInt()];
             
             if(flujoEntrada.readUTF().equals("ELEGIR_LETRA")) 
             {
@@ -46,22 +50,30 @@ public class ServidorAhorcado
                 
                 flujoSalida.writeUTF(partidaIniciada);
                 
-                for(char letra = 'a';letra<='z';letra++)
+                for(char letra = 'a';letra<'z';letra++)
                 {
                 	letras.add(letra);
                 }
                 
+                // Letras de la lista
                 flujoSalida.writeUTF(letras.toString());
                 
-                for(char letra = 'a'; letra <= 'z';letra++)
-                {
-                	if(letra == (Character) flujoEntrada.readUTF())
-                	{
-                		
-                	}
-                	
-                }
+                // Mostracion de la palabra escogida
+                flujoSalida.writeUTF(palabraEscogida);
                 
+                // Averiduar si la letra del cliente la contiene la palabra                 
+                
+                for (int i = 0; i < palabraEscogida.length(); i++)
+                {
+                	if(flujoEntrada.readUTF().charAt().equals(i))
+                	{
+                		flujoSalida.writeUTF(String.valueOf(i));
+                	}
+                	else
+                	{
+                		cont --;
+                	}
+                }
             }            
             
         } 
